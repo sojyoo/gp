@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grievance Portal, Mouse 🐭</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #e6f4ea; }
+    .matcha-btn { background-color: #88c399; }
+    .matcha-btn:hover { background-color: #76b28a; }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-xl shadow-md max-w-md w-full">
+    <h1 class="text-2xl font-bold text-green-700 mb-6">Grievance Portal 🐸</h1>
+    <form id="loginForm" class="mb-4">
+      <input type="text" id="username" placeholder="Username" required class="w-full p-2 mb-2 border rounded" />
+      <input type="password" id="password" placeholder="Password" required class="w-full p-2 mb-4 border rounded" />
+      <button type="submit" class="matcha-btn text-white py-2 px-4 rounded w-full">Login</button>
+    </form>
+    <form id="rantForm" class="hidden" action="https://formspree.io/f/mblyznnj" method="POST">
+      <input type="text" name="title" placeholder="Subject" required class="w-full p-2 mb-2 border rounded" />
+      <textarea name="rant" placeholder="What's the happs?" required rows="4" class="w-full p-2 mb-2 border rounded"></textarea>
+      <label class="block mb-1 text-sm text-gray-700">Mood:</label>
+      <select name="mood" class="w-full p-2 mb-2 border rounded">
+        <option>😡 Angy</option>
+        <option>😞 Sad</option>
+        <option>😐 Meh</option>
+        <option>🥺IDK</option>
+        <option>😊 Happy</option>
+        <option>😋 Freaky</option>
+      </select>
+      <label class="block mb-1 text-sm text-gray-700">Severity (1–5):</label>
+      <input type="range" name="severity" min="1" max="5" class="w-full mb-4" />
+      <input type="hidden" name="_subject" value="New grievance from Meg" />
+      <input type="hidden" name="_captcha" value="false" />
+      <button type="submit" class="matcha-btn text-white py-2 px-4 rounded w-full">Submit to Jam 💌</button>
+    </form>
+    <div id="thankYou" class="hidden text-center text-green-700 font-semibold mt-4">
+      Thank you, Meg!<br/>
+      Your grievance has been sent to Jam.<br/>
+      He’ll get back to you very soon (He’ll think about it)
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById("loginForm");
+    const rantForm = document.getElementById("rantForm");
+    const thankYou = document.getElementById("thankYou");
+
+    loginForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      if (user === "meg" && pass === "meg") {
+        loginForm.style.display = "none";
+        rantForm.style.display = "block";
+      } else {
+        alert("Wrong credentials, girl 🐥");
+      }
+    });
+
+    rantForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const data = new FormData(rantForm);
+      fetch(rantForm.action, {
+        method: "POST",
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      }).then(() => {
+        rantForm.style.display = "none";
+        thankYou.style.display = "block";
+      }).catch(error => alert("There was a problem!"));
+    });
+  </script>
+</body>
+</html>
